@@ -1,4 +1,6 @@
 #Denote V - number of vertices, e - number of edges
+from GraphIterator import GraphIterator
+from utils import TraversalType
 
 
 class Graph:
@@ -186,4 +188,114 @@ class Graph:
 
 
         return result_to_print_type.strip()
+
+    def iterator(self, starting_vertex, type_of_traversal:TraversalType) -> GraphIterator:
+        """
+        :param starting_vertex: the vertex the traversal starts on
+        :param type_of_traversal: BFS or DFS
+        :return: newly created GraphIterator for our object ;D
+        """
+        return GraphIterator(self, starting_vertex, type_of_traversal)
+
+    @staticmethod
+    def create_from_file(filename):
+        """
+        Creates and returns a Graph object from a file.
+
+        File format:
+        - first line: "<directed/undirected> <weighted/unweighted>"
+        - next lines:
+            * 1 token: isolated vertex
+            * 2 tokens: unweighted edge
+            * 3 tokens: weighted edge
+        """
+
+        #open file, read all lines
+        with open(filename, "r") as f:
+            lines = [line.strip() for line in f if line.strip()]
+
+        #treat the case where the file is empty
+        if not lines:
+            raise ValueError("The file is empty.")
+
+        #read the first line -> this tells you what type of graph you have
+        first_line = lines[0].split()
+
+        #treat the case in which the first line is not valid
+        if len(first_line) != 2:
+            raise ValueError("First line must contain exactly 2 words.")
+
+        #save into variables the direction type(directed/undirected graph) and
+        #if it is weighted or not
+        direction_type, weight_type = first_line
+
+        #Create the graph accoring to these variables
+        if direction_type == "directed":
+            directed = True
+        elif direction_type == "undirected":
+            directed = False
+        else:
+            raise ValueError("Graph orientation must be 'directed' or 'undirected'.")
+
+        if weight_type == "weighted":
+            weighted = True
+        elif weight_type == "unweighted":
+            weighted = False
+        else:
+            raise ValueError("Graph type must be 'weighted' or 'unweighted'.")
+
+        graph = Graph(directed=directed, weighted=weighted)
+
+        #for the rest of the lines split into tokens
+        for line in lines[1:]:
+            parts = line.split()
+
+            #we have just a node, no neighbour, no weight
+            if len(parts) == 1:
+                vertex = parts[0]
+                if vertex not in graph.get_vertices():
+                    graph.add_vertex(vertex)
+
+            #we have a node with a neighbour
+            elif len(parts) == 2:
+                start, end = parts
+
+                #if it is weighted each lines must have 3 tokens(according to the lab document)
+                if weighted:
+                    raise ValueError("Weighted graphs must specify a weight for each edge.")
+
+                #add the edge to the graph
+                if start not in graph.get_vertices():
+                    graph.add_vertex(start)
+                if end not in graph.get_vertices():
+                    graph.add_vertex(end)
+
+                graph.add_edge(start, end)
+
+            #we have a node with a neighbour and a weight between them
+            elif len(parts) == 3:
+                start, end, weight = parts
+
+                #this case is not valid unless we have a weighted graph
+                if not weighted:
+                    raise ValueError("Unweighted graphs cannot have weighted edges in file.")
+
+                #add the edge to the graph
+                if start not in graph.get_vertices():
+                    graph.add_vertex(start)
+                if end not in graph.get_vertices():
+                    graph.add_vertex(end)
+
+                #treat the case were the weight is not a number -> raies error
+                try:
+                    weight = int(weight)
+                except ValueError:
+                    raise ValueError(f"Invalid weight '{weight}'. Weight must be an integer.")
+
+                graph.add_edge(start, end, weight)
+
+            else:
+                raise ValueError(f"Invalid line in file: '{line}'")
+        #return the created from file new graph object ;D
+        return graph
 
