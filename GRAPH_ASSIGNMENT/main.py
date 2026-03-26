@@ -1,4 +1,10 @@
-from GRAPH_ASSIGNMENT import Graph
+from Graph import Graph
+from utils import TraversalType
+
+PATH1 = "/Users/alex/PycharmProjects/GRAPH_ASSIGNMENT/A2/Graph1.txt"
+PATH2 = "/Users/alex/PycharmProjects/GRAPH_ASSIGNMENT/A2/Graph2.txt"
+PATH3 = "/Users/alex/PycharmProjects/GRAPH_ASSIGNMENT/A2/Graph3.txt"
+PATH4 = "/Users/alex/PycharmProjects/GRAPH_ASSIGNMENT/A2/Graph4.txt"
 
 try:
     # 1. Initialize as a Directed, Weighted Graph
@@ -43,5 +49,51 @@ try:
 
     print("\n--- Final Graph State ---")
     print(g)
+
+
+    print("\n" + "=" * 30)
+    print("--- TESTING TRAVERSALS (BFS & DFS) ---")
+    print("=" * 30)
+    # A -> B -> D
+    # A -> C -> D
+    traversal_graph = Graph(directed=True, weighted=False)
+    for v in ["A", "B", "C", "D"]:
+        traversal_graph.add_vertex(v)
+
+    traversal_graph.add_edge("A", "B")
+    traversal_graph.add_edge("A", "C")
+    traversal_graph.add_edge("B", "D")
+    traversal_graph.add_edge("C", "D")
+
+    print("\nGraph Structure for Traversals:")
+    print(traversal_graph)
+
+    # --- BFS TEST ---
+    print("\n[ BFS Traversal from A ]")
+    it_bfs = traversal_graph.iterator("A", TraversalType.BFS)
+    while it_bfs.is_valid():
+        current = it_bfs.getCurrent()
+        path = it_bfs.get_path()
+        dist = it_bfs.get_path_length()
+        print(f"Visited: {current} | Path: {' -> '.join(path)} | Distance: {dist}")
+        it_bfs.next()
+
+    # --- DFS TEST ---
+    print("\n[ DFS Traversal from A ]")
+    it_dfs = traversal_graph.iterator("A", TraversalType.DFS)
+    while it_dfs.is_valid():
+        current = it_dfs.getCurrent()
+        path = it_dfs.get_path()
+        depth = it_dfs.get_path_length()  # Note: path length in DFS is the branch depth
+        print(f"Visited: {current} | Path: {' -> '.join(path)} | Depth: {depth}")
+        it_dfs.next()
+
+    print("\n--- Testing 'First' (Reset) ---")
+    it_bfs.first()
+    print(f"After reset, BFS is back at: {it_bfs.getCurrent()}")
+
+    graph1 = Graph.create_from_file(PATH1)
+    print(graph1)
+
 except Exception as e:
     print(e)
