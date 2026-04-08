@@ -162,10 +162,11 @@ class Graph:
         #O(V + e)
         edges = []
         for start_node, adj_list in self.__list_of_neighbors.items():
-            for end_node in adj_list:
-                edges.append((start_node, end_node))
+            for end_node in adj_list.keys():
+                edges.append((start_node, end_node, adj_list[end_node])) #This also includes the cost for MCW algorithms.
 
         return edges
+
 
     def __str__(self):
         #O(V + e)

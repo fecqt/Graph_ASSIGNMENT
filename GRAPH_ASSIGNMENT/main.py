@@ -68,8 +68,9 @@ try:
     print("\nGraph Structure for Traversals:")
     print(traversal_graph)
 
-    # --- BFS TEST ---
+
     print("\n[ BFS Traversal from A ]")
+    """
     it_bfs = traversal_graph.iterator("A", TraversalType.BFS)
     while it_bfs.is_valid():
         current = it_bfs.getCurrent()
@@ -77,9 +78,12 @@ try:
         dist = it_bfs.get_path_length()
         print(f"Visited: {current} | Path: {' -> '.join(path)} | Distance: {dist}")
         it_bfs.next()
+    """
+
 
     # --- DFS TEST ---
     print("\n[ DFS Traversal from A ]")
+    """
     it_dfs = traversal_graph.iterator("A", TraversalType.DFS)
     while it_dfs.is_valid():
         current = it_dfs.getCurrent()
@@ -91,9 +95,27 @@ try:
     print("\n--- Testing 'First' (Reset) ---")
     it_bfs.first()
     print(f"After reset, BFS is back at: {it_bfs.getCurrent()}")
+    """
 
     graph1 = Graph.create_from_file(PATH1)
     print(graph1)
+
+    it_dfs = graph1.iterator("4", TraversalType.DFS)
+    while it_dfs.is_valid():
+        current = it_dfs.getCurrent()
+        path = it_dfs.get_path()
+        depth = it_dfs.get_path_length()  # Note: path length in DFS is the branch depth
+        print(f"Visited: {current} | Path: {' -> '.join(path)} | Depth: {depth}")
+        it_dfs.next()
+
+    # --- BFS TEST ---
+    it_bfs = graph1.iterator("4", TraversalType.BFS)
+    while it_bfs.is_valid():
+        current = it_bfs.getCurrent()
+        path = it_bfs.get_path()
+        dist = it_bfs.get_path_length()
+        print(f"Visited: {current} | Path: {' -> '.join(path)} | Distance: {dist}")
+        it_bfs.next()
 
 except Exception as e:
     print(e)
