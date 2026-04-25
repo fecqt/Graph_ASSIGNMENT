@@ -1,0 +1,89 @@
+
+##############################################################
+  POSITIVE GRAPHS  -  Dijkstra  vs  UCS
+##############################################################
+
+==============================================================
+  POSITIVE GRAPH  |  positives_1_v10_e40.txt
+  10 vertices, 39 edges
+  Walk: 1 -> 10
+==============================================================
+  Dijkstra : time=  164.3 us   cost=63   [OK] match
+             path=1 -> 2 -> 10
+  UCS      : time=  111.1 us   cost=63
+             path=1 -> 2 -> 10
+
+  Metric                     Dijkstra          UCS  note
+  ----------------------------------------------------------
+  g.cost calls                     78           54  O(1), main work unit
+  neighbors() calls                10            7  O(deg v), builds list
+  get_vertices() calls              1            0  O(v), builds list
+
+
+==============================================================
+  POSITIVE GRAPH  |  positives_2_v20_e80.txt
+  20 vertices, 80 edges
+  Walk: 1 -> 20
+==============================================================
+  Dijkstra : time=  179.3 us   cost=75   [OK] match
+             path=1 -> 16 -> 20
+  UCS      : time=  178.3 us   cost=75
+             path=1 -> 16 -> 20
+
+  Metric                     Dijkstra          UCS  note
+  ----------------------------------------------------------
+  g.cost calls                    160          123  O(1), main work unit
+  neighbors() calls                20           14  O(deg v), builds list
+  get_vertices() calls              1            0  O(v), builds list
+
+
+==============================================================
+  POSITIVE GRAPH  |  positives_3_v50_e200.txt
+  50 vertices, 200 edges
+  Walk: 1 -> 50
+==============================================================
+  Dijkstra : time=  379.4 us   cost=186   [OK] match
+             path=1 -> 21 -> 10 -> 50
+  UCS      : time=  254.0 us   cost=186
+             path=1 -> 21 -> 10 -> 50
+
+  Metric                     Dijkstra          UCS  note
+  ----------------------------------------------------------
+  g.cost calls                    400          228  O(1), main work unit
+  neighbors() calls                50           27  O(deg v), builds list
+  get_vertices() calls              1            0  O(v), builds list
+
+
+==============================================================
+  POSITIVE GRAPH  |  positives_4_v100_e400.txt
+  100 vertices, 400 edges
+  Walk: 1 -> 100
+==============================================================
+  Dijkstra : time=  790.2 us   cost=423   [OK] match
+             path=1 -> 71 -> 73 -> 20 -> 100
+  UCS      : time=   1.32 ms   cost=423
+             path=1 -> 71 -> 73 -> 20 -> 100
+
+  Metric                     Dijkstra          UCS  note
+  ----------------------------------------------------------
+  g.cost calls                    800          702  O(1), main work unit
+  neighbors() calls               100           87  O(deg v), builds list
+  get_vertices() calls              1            0  O(v), builds list
+
+
+==============================================================
+  POSITIVE GRAPH  |  positives_5_v1000_e4000.txt
+  1000 vertices, 4000 edges
+  Walk: 1 -> 1000
+==============================================================
+  Dijkstra : time=   9.81 ms   cost=2899   [OK] match
+             path=1 -> 520 -> 650 -> 414 -> 879 -> 769 -> 1000
+  UCS      : time=   6.38 ms   cost=2899
+             path=1 -> 520 -> 650 -> 414 -> 879 -> 769 -> 1000
+
+  Metric                     Dijkstra          UCS  note
+  ----------------------------------------------------------
+  g.cost calls                  8,000        4,674  O(1), main work unit
+  neighbors() calls             1,000          561  O(deg v), builds list
+  get_vertices() calls              1            0  O(v), builds list
+
